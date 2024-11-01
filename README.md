@@ -25,9 +25,11 @@ It'll take a couple minutes to:
 Searching things is near instantaneous after that. Haven't really done any performance benchmarking there.
 
 ### Background
-I chose the Texas State Law database because I wanted to program on something while the entirety of wikipedia was downloading and extracting. I'll try to run this set of programs on Wikipedia later. To get the links, I could have made a script that gets the links from the download page, but it was easier to make a script to make bash commands to download those links and extract them. I don't think those links are going to break in the next month or two.
+I chose the Texas State Law database because I wanted to program on something while the entirety of wikipedia was downloading and extracting. I'll try to run this set of programs on Wikipedia later.
+To get the links, I could have made a script that gets the links from the download page, but it was easier to make a script to make bash commands to download those links and extract them. I don't think those links are going to break in the next month or two.
 
-I used C++ at the first part because in theory it's faster. I can always go in and optimize it further, but it's not heat-death-of-the-universe slow, so it's good enough for now. The Texas State Law 
+I used C++ at the first part because in theory it's faster. I can always go in and optimize it further, but it's not heat-death-of-the-universe slow, so it's good enough for now.
+The Texas State Law `.htm` files have a `<title>`. Each file represents a chapter in the code book. I decided to use those as my documents instead of each entire code book as my document because it's more useful to the user to get a chapter than it is to get a book. I know a lawyer friend who could make use of this.
 
 I used a bash script to call that C++ program a bunch of times. The bash script works on the folders provided as arguments in parallel, and the C++ program scrapes the xml files in the folder in parallel. If you don't have 8+ cores, this might be a lot slower for you.
 

@@ -24,6 +24,8 @@ It'll take a couple minutes to:
 
 Searching things is near instantaneous after that. Haven't really done any performance benchmarking there.
 
+After running the script, you can run `./justSearch.sh` to search without having to create the inverse index again.
+
 ### Background
 I chose the Texas State Law database because I wanted to program on something while the entirety of wikipedia was downloading and extracting. I'll try to run this set of programs on Wikipedia later.
 To get the links, I could have made a script that gets the links from the download page, but it was easier to make a script to make bash commands to download those links and extract them. I don't think those links are going to break in the next month or two.

@@ -57,6 +57,15 @@ std::map<std::wstring, int> generateHistogram(const std::vector<std::wstring>& w
     }
 }*/
 
+std::wostream& printNumber(int number, std::wostream& out){
+    if(number <= 9){
+        out << ((char)number + '0');
+    }else{
+        out << number;
+    }
+    return out;
+}
+
 void htmlToBagOfWords(const std::shared_ptr<std::string> filename, std::wostream& out) {
     std::shared_ptr<tinyxml2::XMLDocument> doc = openDoc(*filename);
     if (doc->Error()) {
@@ -79,17 +88,13 @@ void htmlToBagOfWords(const std::shared_ptr<std::string> filename, std::wostream
                 tokenCount++;
                 totalCount += pair.second;
             }
-            out << tokenCount << " ";
-            if(totalCount <= 9){
-                out << (totalCount - '0');
-            }else{
-                out << totalCount;
-            }
-            out << std::endl;  //No real reason to give the total count, because people can just calc that themselves
+            printNumber(tokenCount, out) << " ";
+            printNumber(totalCount, out) << std::endl;  //No real reason to give the total count, because people can just calc that themselves
         }
 
         for (const auto& pair : hist) {
-            out << pair.first << L" " << pair.second << std::endl;
+            out << pair.first << L" ";
+            printNumber(pair.second, out) << std::endl;
         }
         out << std::endl;
     }

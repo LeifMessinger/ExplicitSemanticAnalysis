@@ -79,7 +79,13 @@ void htmlToBagOfWords(const std::shared_ptr<std::string> filename, std::wostream
                 tokenCount++;
                 totalCount += pair.second;
             }
-            out << tokenCount << " " << totalCount << std::endl;  //No real reason to give the total count, because people can just calc that themselves
+            out << tokenCount << " ";
+            if(totalCount <= 9){
+                out << (totalCount - '0');
+            }else{
+                out << totalCount;
+            }
+            out << std::endl;  //No real reason to give the total count, because people can just calc that themselves
         }
 
         for (const auto& pair : hist) {

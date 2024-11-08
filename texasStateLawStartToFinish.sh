@@ -52,9 +52,15 @@ echo "Bag of words is done."
 
 pushd ./InvertedIndexMaker
 
-alias python='winpty python.exe'
+if [[ "$OSTYPE" != "linux-gnu" ]]; then
+	alias python='winpty python.exe'
+fi
 python -m venv .venv
-source ./.venv/Scripts/activate
+if [ -d ./.venv/Scripts ]; then
+	source ./.venv/Scripts/activate
+else
+	source ./.venv/bin/activate
+fi
 pip install -r requirements.txt
 
 echo "Making inverse index..."
@@ -68,4 +74,3 @@ python ./search.py ./data/InverseIndex.joblib ./data/DocTokenCounts.joblib
 deactivate
 
 popd
-

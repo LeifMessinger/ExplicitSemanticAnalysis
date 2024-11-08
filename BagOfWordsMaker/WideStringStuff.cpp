@@ -3,9 +3,15 @@
 #include <string.h>
 //#include <cwctype>
 //#include <cstring>
+#if _WIN32
 #define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <windows.h>
+#endif
 #include "XMLExtraction.h"
+#include <string>
+#include <cstdlib>
+#include <cwchar>
+#include <clocale>
 
 std::wstring string_to_wide_string(const std::string& string)
 {
@@ -14,6 +20,37 @@ std::wstring string_to_wide_string(const std::string& string)
         return L"";
     }
 
+#ifndef _WIN32
+    std::setlocale(LC_ALL, "en_US.UTF-8"); // Set the locale to UTF-8
+
+    std::mbstate_t state = std::mbstate_t();
+    const char* src = string.data();
+    size_t len = string.size();
+    std::wstring result(len, L'\0');
+    wchar_t* dest = result.data();
+
+    size_t converted = 0;
+    while (len > 0)
+    {
+        int ret = std::mbtowc(dest, src, len);
+        if (ret < 0)
+        {
+            throw std::runtime_error("mbtowc() failed");
+        }
+        else if (ret == 0)
+        {
+            break; // Null character encountered
+        }
+
+        src += ret;
+        len -= ret;
+        dest++;
+        converted++;
+    }
+
+    result.resize(converted);
+    return result;
+#else
     const auto size_needed = MultiByteToWideChar(CP_UTF8, 0, string.data(), (int)string.size(), nullptr, 0);
     if (size_needed <= 0)
     {
@@ -23,6 +60,7 @@ std::wstring string_to_wide_string(const std::string& string)
     std::wstring result(size_needed, 0);
     MultiByteToWideChar(CP_UTF8, 0, string.data(), (int)string.size(), const_cast<wchar_t*>(result.data()), size_needed);
     return result;
+#endif
 }
 
 void wideStringToLowerInPlace(std::wstring& str) {

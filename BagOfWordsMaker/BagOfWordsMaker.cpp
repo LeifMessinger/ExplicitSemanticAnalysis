@@ -37,8 +37,12 @@ std::vector<std::wstring> tokenizeText(const std::wstring& text) {
 
 std::map<std::wstring, int> generateHistogram(const std::vector<std::wstring>& words) {
     std::map<std::wstring, int> histogram;
-    for (const auto& word : words) {
+	//Uncomment this to consider lone words too
+    /*for (const auto& word : words) {
         ++histogram[word];
+    }*/
+    for (size_t i = 0; i < words.size() - 1; ++i) {
+        ++histogram[words[i] + L"+" + words[i + 1]];	//idk, I just think word pairs should be twice as valuable.
     }
     return histogram;
 }

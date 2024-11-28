@@ -73,7 +73,10 @@ def compute_similarity_scores(query_vector: np.ndarray,
 
 def search(query: str, token_to_docs: Dict, 
           similarity: SimilarityMeasure = 'cosine') -> List[Tuple[str, float]]:
-    query_tokens = Counter(query.lower().split())
+    toks = query.lower().split()
+    toks += [toks[i] + '+' + toks[i + 1] for i in range(len(toks) - 1)]
+    query_tokens = Counter(toks)
+	
     unique_tokens = set(query_tokens.keys())
 
     token_to_idx = create_token_to_index(unique_tokens)
